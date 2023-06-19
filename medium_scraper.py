@@ -28,8 +28,8 @@ def medium_to_markdown(*, url: str) ->Optional[str]:
         clean_markdown = re.sub(r'(?<====).*?Share', '', markdown_text, flags=re.DOTALL)
         return clean_markdown
     else:
-        print("ERROR: Could not find article tag")
-        print(soup.prettify())
+        print(f"ERROR: Could not find article tag in url: {url}")
+        # print(soup.prettify())
 
 # take url arg and save a blog to markdown in output_dir
 def main(*, url: str, output_dir: str) -> None:

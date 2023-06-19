@@ -93,7 +93,6 @@ def main(username : str, data_dir : str, sentence_parsing : bool = True, style_o
     
 
 if __name__ == "__main__":
-    print(len(sys.argv))
     if len(sys.argv) < 4:
         print("Usage: python train.py <medium_username> <training_data_dir> <style|subject> [linear|chatgpt]")
         sys.exit(1)

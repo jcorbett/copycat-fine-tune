@@ -50,7 +50,6 @@ def combine_jsonl_files(input_dir: str, filename: str) -> None:
             obj      = json.loads(line)
             json_str = json.dumps(obj)
             json_lines.append(json_str)
-            print(json_str)
         except Exception as e:
             print(f"Error combining line: {line}, {str(e)}")
             
