@@ -20,7 +20,7 @@ from helpers.local_files import (combine_jsonl_files,
 # 3. generate prompt pairs for each article using subject/paragraph pairs
 # 4. combine prompt pairs into a single prompt file
 # 5. call openai api to train new model
-def main(username : str, data_dir : str, sentence_parsing : bool = True) -> None:
+def main(username : str, data_dir : str, sentence_parsing : bool = True, style_only : bool = True) -> None:
     base_dir = os.path.abspath(data_dir)
     
     # Create the directory if it doesn't exist
@@ -51,7 +51,7 @@ def main(username : str, data_dir : str, sentence_parsing : bool = True) -> None
         # 3. convert markdown to subject/paragraph pairs or prompt pairs
         if sentence_parsing: # use sentence parsing
             print("sentence parsing")
-            jsonl_lines = create_prompt_completion_pairs_from_sentences(text = content)
+            jsonl_lines = create_prompt_completion_pairs_from_sentences(text = content, style_only = style_only)
 
         else: # use chatgpt to create prompt pairs
             print("chatgpt parsing")
@@ -93,10 +93,32 @@ def main(username : str, data_dir : str, sentence_parsing : bool = True) -> None
     
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python train.py <medium_username> <training_data_dir>")
+    print(len(sys.argv))
+    if len(sys.argv) < 4:
+        print("Usage: python train.py <medium_username> <training_data_dir> <style|subject> [linear|chatgpt]")
         sys.exit(1)
 
-    username   = sys.argv[1]
-    output_dir = sys.argv[2]
-    main(username = username, data_dir = output_dir, sentence_parsing = True)
+    username         = sys.argv[1]
+    output_dir       = sys.argv[2]
+    style_or_subject = sys.argv[3]
+    style_only       = True
+    use_chatgpt      = False
+
+    if style_or_subject == "style":
+        style_only = True
+    elif style_or_subject == "subject":
+        style_only = False
+    else:
+        print("Usage: python train.py <medium_username> <training_data_dir> <style|subject> <linear|chatgpt>")
+        print(f"<style|subject> needs to be either 'style' or 'subject', not: {style_or_subject}")
+        sys.exit(1)
+
+    if not style_only:
+        if len(sys.argv) >= 5:
+            linear_or_chatgpt = sys.argv[4]
+            if linear_or_chatgpt == "chatgpt":
+                use_chatgpt = True
+
+    sentence_parsing = not use_chatgpt
+    main(username = username, data_dir = output_dir, sentence_parsing = sentence_parsing, style_only = style_only)
+        

@@ -47,6 +47,10 @@ $ python ./train.py [medium_username] [output_directory] [style|subject] [linear
 
 **style|subject**: This is used to generate the prompt-completion pairs and is either the `style` or `subject` of the author you're training on. This is used to generate the prompt-completion pairs. For example, if you're training on `style`, it will use the OpenAI-recommended blank prompt (`prompt=""`). If you are choosing `subject`, it will use the next parameter to generate the prompt pair based on what the author is writing about.
 
+**linear|chatgpt**: This is used to generate the prompt-completion pairs and is either `linear` or `chatgpt`. For example, if you're training on `linear`, it will use the next sentence as the completion (`completion:[next sentence]`) with the current sentence as the prompt (`prompt=[current sentence]`). If you are choosing `chatgpt`, it will ask chatgpt to generate prompts that would generate the current sentence as a completion. ***This will default to `linear` if not specified.***
+
+**NOTE**: This is only necessary when using `subject` as the 3rd parameter. Also, `chatgpt` is much slower than `linear` and can be expensive.
+
 example:
 ```bash
 $ python ./train.py MarcoAngeloBendigo .output style 

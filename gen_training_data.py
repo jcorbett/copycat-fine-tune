@@ -92,7 +92,7 @@ def parse_file(file_path: str) -> dict:
     return parse_lines(lines)
 
 
-def create_prompt_completion_pairs_from_sentences(text: str) -> List[str]:
+def create_prompt_completion_pairs_from_sentences(text: str, style_only: bool = True) -> List[str]:
     # Parse the text using SpaCy
     doc = nlp(text)
 
@@ -102,8 +102,10 @@ def create_prompt_completion_pairs_from_sentences(text: str) -> List[str]:
     # Create prompt-completion pairs
     pairs = []
     for i in range(len(sentences) - 1):
-        # pairs.append(format_prompt(sentences[i].text, sentences[i + 1].text))
-        pairs.append(format_prompt("", sentences[i].text))
+        if style_only:
+            pairs.append(format_prompt("", sentences[i].text))
+        else:
+            pairs.append(format_prompt(sentences[i].text, sentences[i + 1].text))
     return pairs
 
 
