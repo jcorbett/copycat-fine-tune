@@ -1,14 +1,10 @@
 import openai
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
-import os
-import subprocess
 import json
 from typing import List
 
 load_dotenv() # take environment variables from .env.
-
-# openai.api_key = "sk-XXXXXXXXXXXXXXXXXX"
 
 system_msg = """You are a LLM trainer. You help by responding with writing prompts that would generate the text input by the user.
 
@@ -41,19 +37,3 @@ def format_prompt(prompt : str, content : str) -> str:
     completion_json = json.dumps(content)
 
     return f'{{"prompt": {prompt_json}, "completion": {completion_json}}}'
-
-
-
-
-# def to_jsonl_string(key, value):
-#     # Convert newlines to escaped newlines
-#     escaped_value = value.replace("\n", "\\n")
-#     # Create a dictionary for the JSON object
-#     json_obj = {key: escaped_value}
-#     # Convert the dictionary to a JSON string and add a newline at the end to make it JSON Lines format
-#     jsonl_str = json.dumps(json_obj) + "\n"
-#     return jsonl_str
-
-# text = "Hello\nWorld"
-# jsonl_text = to_jsonl_string("prompt", text)
-# print(jsonl_text)
